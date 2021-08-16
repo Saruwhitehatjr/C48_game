@@ -10,6 +10,7 @@ var iv = 255
 var bm = 530
 var l2c = 0
 var fll = 80
+var htp,form
 function preload(){
  
  weapon = loadImage("img/weapon.png")
@@ -68,7 +69,8 @@ play.addImage(pb)
 play.scale = 0.2*/
 
 button= createButton("Start ")
-htp= createButton("HOW TO PLAY? ")
+form=new Form();
+
 
 }
 
@@ -77,115 +79,19 @@ function draw(){
   background(bg)
 //camera.position.x = player.x
 //camera.position.y = player.y
+
+
   if(gameState===0){
-
-
-tint(255,iv)
-image(ibg,0,0,width,height)
-iv = iv-100
-if(iv<=0){
-  if(tm<=150){
-    tm +=5
-  }
-  if(bm>=height/2-50){
-    bm -=5
-  }
-}
-
-bg = loadImage("img/bg.png")
-  
-    pname= inp.value();
-  
-   
-      textFont('Bold')
-      textSize(50)
-      fill("yellow")
-      stroke("red")
-      //text("Man vs Wild",width/2-150,height/2)
-
-      text("Man vs Wild",width/2-150,tm)
-      inp.position(width/2-50,bm);
-      button.position(width/2-50,bm+100);
-    /* htp.position(width/2+50,height/2);
-     
-    htp.mousePressed(()=>{
-      textFont('Bold')
-      textSize(100)
-      fill("yellow")
-      stroke("red")
-      text("Instruction",100,50)
-      textSize(30)
-      text("Touch the temple to go next level ",100,70)
-      text("LEFT_ARROW to move",100,90)
-      text("RIGHT_ARROW to move",100,110)
-
-
-    })*/
-      
-
-  
-/*if(mousePressedOver(play)||keyDown(ENTER)){
-  gameState=1
-  }*/
-button.mousePressed(()=>{
-  gameState=1
-})
+levelone();
      }
   
  if(gameState===1){
-  bg = loadImage("img/bg.png")
- cursor("img/pointer.png")
-  player.visible=true;
-  if(player.x<=0){
-   player.x =  50
-  }else if(player.x>=temple.x-100){
-player.x = temple.x-100
-  }
- 
-text(lifeCount,width/2,height/2)
-can.mousePressed(bulletCome)
-temple.visible=true;
- inp.hide()
- button.hide()
-  textFont('italic')
-  textSize(20)
-  fill("yellow")
-  stroke("red")
-  text(pname,120,25)
-  animalcome()
-weaponShow.visible=true;
-
-if(keyDown(LEFT_ARROW)){
-player.x = player.x-6
-
-}
-if(keyDown(RIGHT_ARROW)){
-  player.x = player.x+6
-}
-  
-for (var i = 0; i < animals.length; i++) {
-  var fl = 120
- 
-  if (player.isTouching(animals.get(i))) {
-    animals.get(i).bounceOff(player);
-    fll-=20
-  }
-  createIcon(fl)
-   if (bullets.isTouching(animals.get(i))) {
-        animals.get(i).destroy() 
-        bullets.destroyEach()
-  }
-
+   leveltwo();
 }
 
 
-if(fll<=0){
-  gameState=4
-}
-else if(player.x>=temple.x-100){
-gameState=2
-}
-}
+
+
 if(gameState===2){
 bg = loadImage("img/bg2.png")
 bgm = loadImage("bgm/bird-bgm.mp3")
@@ -205,7 +111,7 @@ if (lbullets.isTouching(birds.get(i))) {
        birds.get(i).destroy() 
         lbullets.destroyEach()
   }
-  createIcon()
+  //createIcon()
 }
 }
 
@@ -314,4 +220,109 @@ function createIcon(x)
   life.scale=0.02
  life.lifetime=20;
   }
+}
+
+function levelone()
+{
+  tint(255,iv)
+image(ibg,0,0,width,height)
+iv = iv-100
+if(iv<=0){
+  if(tm<=150){
+    tm +=5
+  }
+  if(bm>=height/2-50){
+    bm -=5
+  }
+}
+
+bg = loadImage("img/bg.png")
+  
+    pname= inp.value();
+  
+   
+      textFont('Bold')
+      textSize(50)
+      fill("yellow")
+      stroke("red")
+      //text("Man vs Wild",width/2-150,height/2)
+
+      text("Man vs Wild",width/2-150,tm)
+      inp.position(width/2-50,bm);
+      button.position(width/2-50,bm+100);
+
+  
+     form.display();
+  
+/*if(mousePressedOver(play)||keyDown(ENTER)){
+  gameState=1
+  }*/
+button.mousePressed(()=>{
+  gameState=1
+})
+}
+
+function leveltwo()
+{
+  bg = loadImage("img/bg.png")
+  cursor("img/pointer.png");
+
+  inp.hide()
+  button.hide()
+  form.hide()
+  
+  player.visible=true;
+  temple.visible=true;
+  weaponShow.visible=true;
+
+  if(player.x<=0){
+   player.x =  50
+  }else if(player.x>=temple.x-100){
+   player.x = temple.x-100
+  }
+ 
+
+  can.mousePressed(bulletCome)
+  animalcome()
+
+
+  text(lifeCount,width/2,height/2)
+
+  textFont('italic')
+  textSize(20)
+  fill("yellow")
+  stroke("red")
+  text(pname,120,25)
+
+
+
+if(keyDown(LEFT_ARROW)){
+player.x = player.x-6
+
+}
+if(keyDown(RIGHT_ARROW)){
+  player.x = player.x+6
+}
+  
+for (var i = 0; i < animals.length; i++) {
+  var fl = 120
+ 
+  if (player.isTouching(animals.get(i))) {
+    animals.get(i).bounceOff(player);
+    fll-=20
+  }
+
+  createIcon(fl);
+  
+   if (bullets.isTouching(animals.get(i))) {
+        animals.get(i).destroy() 
+        bullets.destroyEach()
+  }
+}
+if(fll<=0){
+  gameState=4
+}
+else if(player.x>=temple.x-100){
+gameState=2
+}
 }
